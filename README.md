@@ -1,132 +1,149 @@
-<!DOCTYPE html>
-<html>
-<head>
-</head>
-<body>
-  <h1>Anomaly Detection Project</h1>
-  
-  <h2>Anomalous Score >= 2</h2>
-   <p>(The result of the mmodel gives the Range from 1-10, so the if the scores is >=3, its a anomalous record)</p>
-   
-    
-  <h2>Table of Contents</h2>
-  <ul>
-    <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#algorithms">Algorithms Used</a></li>
-    <li><a href="#maintainer">Maintainer</a></li>
-  </ul>
-  <h2 id="introduction">Introduction</h2>
-  <p>
-    Anomaly detection plays a crucial role in identifying and mitigating potential security threats.
-    This project focuses on detecting anomalies in user login behavior, which can help identify suspicious activities such as unauthorized access attempts or compromised user accounts.
-    The project utilizes machine learning techniques, specifically XGBoost, to train an anomaly detection model based on a labeled dataset.
-    The trained model can then be used to classify new login events as normal or anomalous based on their features.
-  </p>
-  <h2 id="installation">Installation</h2>
-  <ol>
-    <li>Clone the repository:</li>
-  </ol>
-  <pre><code>git clone https://github.com/kushalidarak/anomaly-detection.git
-cd anomaly-detection
-</code></pre>
-  <ol start="2">
-    <li>Create and activate a virtual environment (optional but recommended):</li>
-  </ol>
-  <pre><code>python3 -m venv env
-source env/bin/activate
-</code></pre>
-  <ol start="3">
-    <li>Install the required dependencies:</li>
-  </ol>
-  <pre><code>pip install -r requirements.txt
-</code></pre>
-  <ol start="4">
-    <li>Download the dataset:</li>
-  </ol>
-  <p>
-    The dataset used for training and testing the anomaly detection model should be placed in the <code>data</code> directory.
-    Make sure to follow the appropriate data format and column structure.
-  </p>
-  <h2 id="usage">Usage</h2>
-  <h3>Data Preparation</h3>
-  <ol>
-    <li>Place your login data file (<code>Login_Data.csv</code>) in the project root directory.</li>
-    <li>Open the <code>anomaly_detection_stgi.ipynb</code> notebook in Jupyter Notebook or JupyterLab.</li>
-    <li>Execute the notebook cells to preprocess the data, perform feature engineering, and create the target variable.</li>
-    <li>Save the preprocessed data to a file:</li>
-  </ol>
-  <pre><code>data.to_csv("preprocessed_data.csv", index=False)
-</code></pre>
-  <h3>Model Training</h3>
-  <ol>
-    <li>Open the <code>anomaly_detection_stgi.ipynb</code> notebook in Jupyter Notebook or JupyterLab.</li>
-    <li>Execute the notebook cells to load the preprocessed data, split it into training and testing sets, and train the model.</li>
-    <li>Save the trained model to a file, such as a pickle file (.pkl), for future use and deployment. This file will be used to load the trained model during the anomaly detection process.</li>
-  </ol>
-  <pre><code>import pickle
- 
-with open("regressor_model.pkl", 'wb') as file:
-    pickle.dump(regressor, file)
-</code></pre>
-  <h3>Running the FastAPI Server</h3>
-  <ol>
-    <li>Open the <code>fast_api.py</code> file.</li>
-    <li>Update the file path to the trained model:</li>
-  </ol>
-  <pre><code>with open("regressor_model.pkl", 'rb') as file:
-    model = pickle.load(file)
-</code></pre>
-  <ol start="3">
-    <li>Open the terminal and navigate to the project folder:</li>
-  </ol>
-  <pre><code>cd anomaly-detection-project</code></pre>
-  <ol start="4">
-    <li>Run the FastAPI server:</li>
-  </ol>
-  <pre><code>uvicorn fast_api:app --reload
-</code></pre>
-  <ol start="5">
-    <li>Open your web browser and visit <a href="http://localhost:8000">http://localhost:8000</a> to ensure the server is running. You should see a "Hello, World!" message.</li>
-  </ol>
-  <h3>Detecting Anomalies</h3>
-  <ol>
-    <li>To detect anomalies, make a POST request to the <code>/docs</code> endpoint using an API client like cURL or Postman.</li>
-    <li>Set the request URL to <code>http://localhost:8000/docs</code> and provide the following JSON payload:</li>
-  </ol>
-  <pre><code>{
-    "Country": &lt;country_value&gt;,
-    "Device_Type": &lt;device_type_value&gt;,
-    "Login_Successful": &lt;login_successful_value&gt;,
-    "LoginRatio": &lt;login_ratio_value&gt;,
-    "Final_Browser_Category": &lt;final_browser_category_value&gt;,
-    "Total_Device_Types": &lt;total_device_types_value&gt;,
-    "Total_IP_Addresses": &lt;total_ip_addresses_value&gt;,
-    "Total_Countries": &lt;total_countries_value&gt;,
-    "Total_Browser_Categories": &lt;total_browser_categories_value&gt;,
-    "Time_Difference_in_sec": &lt;time_difference_value&gt;
-}
-</code></pre>
-  <ol start="3">
-    <li>Replace the <code>&lt;value&gt;</code> placeholders with the corresponding feature values for anomaly detection.</li>
-    <li>The API will respond with the predicted anomaly score for the provided data.</li>
-     <li> <h2>(The result of the mmodel gives the Range from 1-10, so the if the scores is >=3, its a anomalous record) Anomalous Score >= 2 </h2></li>
-  </ol>
-  <h2 id="algorithms">Algorithms Used</h2>
-  <p>The following algorithms are used in this project:</p>
-  <ul>
-    <li>XGBoost: XGBoost is an optimized gradient boosting algorithm that is commonly used for classification and regression tasks. It is known for its speed and performance in handling large datasets.</li>
-  </ul>
+# Anomaly Detection System
+### Real-Time User Login Anomaly Detection using XGBoost & FastAPI
 
-  <h2 id="maintainer">Maintainer</h2>
-  <p>
-    This project is maintained by Kushali Darak, an AI Data Engineer with over 4 years of experience in building scalable data pipelines and distributed processing workflows. Kushali specializes in Python, SQL, and Apache Spark, with a focus on delivering reliable data solutions for enterprise analytics.
-  </p>
-  <p>
-    Email: kushalid27@gmail.com <br>
-    LinkedIn: <a href="https://www.linkedin.com/in/kushalidarak">https://www.linkedin.com/in/kushalidarak</a>
-  </p>
-  
-</body>
-</html>
+![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python)
+![XGBoost](https://img.shields.io/badge/XGBoost-ML-orange?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter)
+
+---
+
+## Overview
+
+Built a machine learning-powered anomaly detection system that identifies 
+suspicious user login behavior in real time. The system trains an XGBoost 
+model on labeled login event data, scores incoming events on a 1–10 risk 
+scale, and exposes predictions via a FastAPI REST endpoint — enabling 
+security teams to flag and respond to unauthorized access attempts 
+programmatically.
+
+---
+
+## Problem Statement
+
+Enterprise security teams struggle to identify compromised accounts and 
+unauthorized access attempts from high-volume login event streams. Manual 
+review is not scalable. This system automates anomaly scoring by learning 
+patterns from historical login behavior and flagging deviations in real time.
+
+---
+
+## Architecture
+Raw Login Data (CSV)
+↓
+Feature Engineering & Preprocessing  (Jupyter Notebook)
+↓
+XGBoost Model Training & Validation
+↓
+Serialized Model (.pkl)
+↓
+FastAPI REST Endpoint  (/predict)
+↓
+Anomaly Score (1–10) → Flag if score ≥ 3
+
+---
+
+## Key Features
+
+**ML-Based Scoring** — XGBoost model trained on labeled login events, 
+producing a continuous risk score (1–10) rather than a binary flag, 
+giving security teams fine-grained control over alert thresholds.
+
+**REST API Deployment** — FastAPI server exposes a `/predict` endpoint 
+accepting JSON payloads, making the model consumable by any upstream 
+system or dashboard.
+
+**Feature Engineering** — engineered features include login ratios, 
+device diversity, geographic spread, browser patterns, and time 
+difference signals to maximize detection accuracy.
+
+**Threshold-Based Alerting** — records scoring ≥ 3 are classified as 
+anomalous, configurable based on organizational risk tolerance.
+
+---
+
+## Anomaly Score Logic
+
+| Score Range | Classification |
+|---|---|
+| 1 – 2 | Normal behavior |
+| 3 – 5 | Suspicious — review recommended |
+| 6 – 10 | High risk — anomalous, flag immediately |
+
+---
+
+## How to Run
+
+### Prerequisites
+- Python 3.8+
+- `xgboost`, `fastapi`, `uvicorn`, `scikit-learn`, `pandas`, `pickle`
+
+### Setup
+
+```bash
+# Clone the repo
+git clone https://github.com/kushalidarak/anomaly-detection.git
+cd anomaly-detection
+
+# Create virtual environment
+python3 -m venv env
+source env/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Train the Model
+
+```bash
+# Open and run the notebook
+jupyter notebook anomaly_detection_stgi.ipynb
+
+# Preprocessed data and trained model saved automatically
+# Output: preprocessed_data.csv, regressor_model.pkl
+```
+
+### Run the API Server
+
+```bash
+uvicorn fast_api:app --reload
+# Visit http://localhost:8000/docs for interactive API documentation
+```
+
+### Sample API Request
+
+```json
+POST /predict
+{
+  "Country": 1,
+  "Device_Type": 2,
+  "Login_Successful": 1,
+  "LoginRatio": 0.85,
+  "Final_Browser_Category": 3,
+  "Total_Device_Types": 2,
+  "Total_IP_Addresses": 5,
+  "Total_Countries": 1,
+  "Total_Browser_Categories": 2,
+  "Time_Difference_in_sec": 300
+}
+
+Response: { "anomaly_score": 7 }  → Anomalous
+```
+
+---
+
+## Tech Stack
+
+`Python` · `XGBoost` · `FastAPI` · `Scikit-learn` · 
+`Pandas` · `Jupyter Notebook` · `REST API` · `Pickle`
+
+---
+
+## Author
+
+**Kushali Darak** — AI Data Engineer  
+4+ years building scalable batch and real-time data pipelines 
+across manufacturing and financial services environments.
+
+[LinkedIn](https://www.linkedin.com/in/kushalidarak) · 
+[Portfolio](https://Kushalidarak.github.io)
